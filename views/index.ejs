@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="css/style.css">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $.get('/result',function(data){
+                    $('.players-container').html(data);
+                });
+                $(document).on('submit','form',function(e){
+                    $.post($(this).attr('action'),$(this).serialize(),function(res){
+                        $('.players-container').html(res);
+                    });
+                    return false;
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='search-container'>
+                <form action="/search" method='POST'>
+                    <label>Search Users
+                        <input type="text" name="player_name">
+                    </label>
+                    <label><input type="checkbox" name='genders' value="M"> Male</label>
+                    <label> <input type="checkbox" name='genders' value="F"> Female</label>
+                    <label>Sports</label>
+                    <label><input type="checkbox" name='sports' value="1"> Basketball</label>
+                    <label><input type="checkbox" name='sports' value="2"> Volleyball</label>
+                    <label><input type="checkbox" name='sports' value="3"> Baseball</label>
+                    <label><input type="checkbox" name='sports' value="4"> Football</label>
+                    <label><input type="checkbox" name='sports' value="5"> Soccer</label>
+                    <input type="submit" value="Search" class='search'>
+                    <a href="/">Clear Selections</a>
+                </form>
+            </div>
+            <div class='players-container'></div>
+        </div>
+    </body>
+</html>

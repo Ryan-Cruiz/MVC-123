@@ -1,0 +1,58 @@
+*{
+    padding:0px;
+    margin:0px;
+    /* <!-- outline:1px solid black; --> */
+}
+.container{
+    width:1000px;
+    margin:0px auto;
+}
+a,.search{
+    color:white;
+    text-decoration:none;
+    background-color:red;
+    box-shadow: 1px 3px #888888;
+    border:1px solid black;
+    font-size:15px;
+    padding:5px;
+}
+.search{
+    background-color:green;
+   
+}
+.search-container{
+    display:inline-block;
+    width:200px;
+    height:400px;
+    margin:30px;
+    vertical-align:middle;
+}
+    label{
+        display:block;
+        padding:5px;
+    }
+.players-container{
+    display:inline-block;
+    width:700px;
+    height:400px;
+    vertical-align:middle;
+    overflow:scroll;
+    text-align:center;
+}
+    .players-container div{
+        width:150px;
+        height:150px;
+        display:inline-block;
+        margin:10px;
+        text-align:center;
+        border:1px solid black;
+       
+    }
+    .players-container div img{
+        width:70px;
+        height:70px;
+        border-radius:50%;
+        margin-top:10px;
+        border:1px solid black;
+    }
+
