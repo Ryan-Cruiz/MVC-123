@@ -1,0 +1,71 @@
+const Express = require("express");
+const Router = Express.Router();
+const bodyParser = require('body-parser');
+const jsonParser = bodyParser.json();
+/**
+ * 
+ */
+class route_path {
+    constructor() {
+        this.get = {};
+        this.post = {};
+        this.put = {};
+        this.destroy = {};
+    }
+    execute_path() {
+        let get = Object.keys(this.get);
+        let post = Object.keys(this.post);
+        let put = Object.keys(this.put);
+        let destroy = Object.keys(this.destroy);
+        for (let i = 0; i < get.length; i++) {
+            // console.log('get',this.get[get[i]]);
+            Router.get(get[i], this.get[get[i]]);
+        }
+        for (let i = 0; i < post.length; i++) {
+            //console.log('post',post[i],this.post[post[i]]);
+            Router.post(post[i], this.post[post[i]]);
+        }
+        for (let i = 0; i < put.length; i++) {
+            //console.log('put',put[i],this.put[put[i]]);
+            Router.put(put[i], this.put[put[i]]);
+        }
+        for (let i = 0; i < destroy.length; i++) {
+            console.log('destroy', destroy[i], this.destroy[destroy[i]]);
+            Router.delete(destroy[i], this.destroy[destroy[i]]);
+        }
+        return Router;
+    }
+}
+/**
+ * 
+ */
+routing = (filepath) => {
+    const new_Controller = require(filepath);
+    return new_Controller;
+}
+routes = (filepath) => {
+    let newRoute = routing(filepath);
+    return newRoute;
+}
+/**
+ * This Function will take a JS FILE and require the file to be use in taking queried data
+ * or elsewhere
+ */
+model = (filepath) => {
+    let newRoute = routing('../src/models/' + filepath);
+    return newRoute;
+}
+/**
+ *  This Function will take a JS FILE and require the file to be use in routing or elsewhere
+ */
+controller = (filepath) => {
+    let newRoute = routing('../src/controllers/' + filepath);
+    return newRoute;
+
+}
+
+module.exports = {
+    route_path: new route_path(),
+    model: model,
+    controller: controller,
+}

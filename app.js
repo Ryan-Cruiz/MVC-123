@@ -16,31 +16,28 @@ Things to remember before the doing spaghetti coding
     -> write it after the query is fired or else you might not able to catch the queries
 10.
 */
-const lib = require('./system/loaders.js');
-const config = lib.config;
+const { config, profile } = require('./src/loaders.js');
 const Express = require("express");
 const path = require("path");
 const app = Express();
 const bodyParser = require('body-parser');
-const profiler = lib.profile;
+const profiler = profile;
 const session = require('express-session');
-
+const cors = require('cors');
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(Express.static(path.join(__dirname, "./assets")));
-
-app.set('views', path.join(__dirname, './views'));
-
+app.use(Express.static(path.join(__dirname, "./src/assets")));
+app.set('views', path.join(__dirname, './src/views'));
 app.use(session(config.session));
 
 app.set('view engine', 'ejs');
-
-const routes  = require('./system/routes.js');
+app.use(cors());
+const routes = require('./system/routes.js');
 
 app.use((req, res, next) => {
-    profiler.time =  Date.now(); // take the current time of execution
-    profiler.request = req; // take the request
-    profiler.response = res; // take the response
+    profiler.time = Date.now(); // take the current time of execution
+    profiler.req = req; // take the request
+    profiler.res = res; // take the response
     /* deliver all this on profiler.js and fetch it on mvc_model and logs it there when
         profiler is called in specific method
     */
@@ -48,6 +45,6 @@ app.use((req, res, next) => {
 });
 app.use(routes);
 
-app.listen(config.port, function(){
-    console.log("listening on port "+config.port);
+app.listen(config.port, function () {
+    console.log("listening on port " + config.port);
 });

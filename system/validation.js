@@ -26,32 +26,32 @@ module.exports = class validation{
                // console.log('this is in for loop',key[x].rules[j]);
                 let length_str = key[x].rules[j].slice(0, key[x].rules[j].length - 3);
                 let min_max = key[x].rules[j].slice(11, key[x].rules[j].length - 1);
-                if(key[x].rules[j] == 'required' && key[x].form_data == '' || key[x].form_data == undefined){
+                if(key[x].rules[j] === 'required' && key[x].form_data === '' || key[x].form_data === undefined){
                    // console.log('The '+ validation_rules[count] +' must not left empty');
                     error_arr.push('The '+ validation_rules[count] +' must not left empty');
                 }
-                if(length_str == 'min_length' && key[x].form_data.length < min_max){
+                if(length_str === 'min_length' && key[x].form_data.length < min_max){
                     //console.log('Minimum length for '+validation_rules[count]+' is '+min_max +' character(s)');
                     error_arr.push('Minimum length for '+validation_rules[count]+' is '+min_max +' character(s)');
                 }
-                if(length_str == 'max_length' &&  key[x].form_data.length > min_max){
+                if(length_str === 'max_length' &&  key[x].form_data.length > min_max){
                    // console.log('Maximum length for '+validation_rules[count]+' is '+min_max +' character(s)');
                     error_arr.push('Maximum length for '+validation_rules[count]+' is '+min_max +' character(s)');
                 }
-                if(key[x].rules[j] == 'email'){
-                    if(this.search(key[x].form_data,'@') == -1){
+                if(key[x].rules[j] === 'email'){
+                    if(this.search(key[x].form_data,'@') === -1){
                        // console.log('The '+validation_rules[count]+' is need to be valid email');
                         error_arr.push('The '+validation_rules[count]+' is need to be valid email');
                     }
                 }
-                if(this.replace(key[x].rules[j],7) == 'confirm' && this.validate[key[x].rules[j].slice(8, key[x].rules[j].length - 1)].form_data != key[x].form_data){
+                if(this.replace(key[x].rules[j],7) === 'confirm' && this.validate[key[x].rules[j].slice(8, key[x].rules[j].length - 1)].form_data != key[x].form_data){
                     // console.log('The '+validation_rules[count]+' is need to be same as '+key[x].rules[j].slice(8, key[x].rules[j].length - 1));
                     error_arr.push('The '+validation_rules[count]+' is need to be same as '+key[x].rules[j].slice(8, key[x].rules[j].length - 1));
                 }
-                if(key[x].rules[j] == 'is_numeric' && this.is_numeric(key[x].form_data) == false){
+                if(key[x].rules[j] === 'is_numeric' && this.is_numeric(key[x].form_data) === false){
                     error_arr.push('The '+validation_rules[count]+' only need numbers');
                 }
-                if(key[x].rules[j] == 'is_char' && this.is_numeric(key[x].form_data) == true){
+                if(key[x].rules[j] === 'is_char' && this.is_numeric(key[x].form_data) === true){
                     error_arr.push('The '+validation_rules[count]+' only need characters');
                 }
               
@@ -62,7 +62,7 @@ module.exports = class validation{
     }
     search(form_data,string){
         for(let i =0;i<form_data.length;i++){
-            if(form_data[i] == string){
+            if(form_data[i] === string){
                 return i;
             }
         }

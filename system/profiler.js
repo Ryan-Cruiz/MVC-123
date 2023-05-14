@@ -1,7 +1,7 @@
 module.exports = {
         query_string : '',
-        response : [],
-        request : [],
+        res : ()=>{},
+        req : ()=>{},
         query_result : [],
         time: 0,
     queries(string,result){
