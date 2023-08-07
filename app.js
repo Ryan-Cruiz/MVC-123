@@ -46,5 +46,5 @@ app.use((req, res, next) => {
 app.use(routes);
 
 app.listen(config.port, function () {
-    console.log("listening on port " + config.port);
+    console.log("listening on port " + `http://localhost:${config.port}`);
 });

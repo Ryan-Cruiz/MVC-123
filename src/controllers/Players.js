@@ -5,7 +5,7 @@ NAME YOUR CLASS SAME NAME ON FILE LIKE CI
 import the model by using
 model_obj = new config.model('model name/.js');
 */
-const { core, profile, orm } = require('../loaders.js');
+const { core, profile } = require('../loaders.js');
 const { model } = core;
 const car = model('Car');
 class Players {
@@ -16,7 +16,7 @@ class Players {
     /* the index page file */
     async index() {
         // console.log(res);
-        const res = await car.get_orm();
+        const res = await car.getAllCars();
         console.log(res,'response')
         profile.res.render('index'); // render the index page
         profile.res.end();  

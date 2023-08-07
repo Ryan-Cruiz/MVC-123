@@ -6,15 +6,15 @@ class ORM {
     select(tbl_name, arr_values) {
         this.queries += `SELECT `;
         if (arr_values[0] === '*' && arr_values.length === 1 || arr_values === '*') {
-            this.queries += '* FROM ';
+            this.queries += `* FROM `;
         } else {
-            arr_values.map((values, i) => {
+            for (let i = 0; i < arr_values.length; i++) {
                 if (i !== arr_values.length - 1) {
-                    this.queries += `${values},`;
+                    this.queries += `${arr_values[i]},`;
                 } else {
-                    this.queries += `${values} FROM `;
+                    this.queries += `${arr_values[i]} FROM `;
                 }
-            })
+            }
         }
         this.select_tbl = tbl_name;
         this.queries += tbl_name;
@@ -25,13 +25,13 @@ class ORM {
      * 
      * @param {*} condition_arr 
      * @returns 
-     * This will take an array of condition e.g WHERE([t1, ORM.AND(t2) , ORM.OR(t3) ])
+     * This will take an array of condition e.g WHERE([t1, ORM.and(t2) , ORM.or(t3) ])
      */
-    where(condition_arr) {
+    where() {
         this.queries += ` WHERE `
-        condition_arr.map(values => {
-            this.queries += values;
-        })
+        for (let i = 0; arguments.length; i++) {
+            this.queries += arguments[i] + ` `;
+        }
         return this;
     }
 
@@ -40,7 +40,7 @@ class ORM {
      * @param {*} value 
      * @returns 
      * will take the value and return it to append
-     * e.g  WHERE([t1, ORM.OR(t3) ])
+     * e.g  WHERE([t1, ORM.or(t3) ])
      */
     or(value) {
         return ` AND ${value}`;
@@ -51,7 +51,7 @@ class ORM {
      * @param {*} value 
      * @returns 
      * will take the value and return it to append
-     * e.g  WHERE([t1, ORM.AND(t2)])
+     * e.g  WHERE([t1, ORM.and(t2)])
      */
     and(value) {
         return ` OR ${value}`;
@@ -72,16 +72,47 @@ class ORM {
         this.queries += output;
         return this;
     }
-    destroy(tbl_name){
+
+    destroy(tbl_name) {
         let output = `DELETE FROM ${tbl_name}`;
         this.queries += output;
         return this;
     }
+
+    insert(table, query_fields_arr, query_val_arr, input_arr) {
+        this.queries = `INSERT INTO ${table}(`;
+        for (let i = 0; i < query_fields_arr.length; i++) {
+            if (i >= query_fields_arr.length - 1) {
+                this.queries += `${query_fields_arr[i]})`;
+            } else {
+                this.queries += `${query_fields_arr[i]},`;
+            }
+        }
+        this.queries += ' VALUES(';
+        for (let i = 0; i < query_val_arr.length; i++) {
+            if (i >= query_val_arr.length - 1) {
+                this.queries += `${query_val_arr[i]})`;
+            } else {
+                this.queries += `${query_val_arr[i]},`;
+            }
+        }
+        console.log(this.queries)
+        return this;
+    }
     exec() {
-        let output = this.queries;
-        this.queries = '';
-        this.select_tbl = '';
-        return output;
+        return new Promise((resolve, reject) => {
+            const databaseType = this.CONFIG.db_type;
+            this.connection.query(databaseType === 'pg' ? this.queries : this.sql.format(this.queries), (err, rows) => {
+                //  this.profiler.queries(query,rows);
+                if (err) {
+                    reject(err);
+                } else {
+                    this.queries = '';
+                    this.select_tbl = '';
+                    resolve(rows);
+                }
+            });
+        });
     }
 }
-module.exports = new ORM();
+module.exports = ORM;

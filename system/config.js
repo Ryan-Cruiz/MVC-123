@@ -3,6 +3,7 @@
 module.exports = {
 
     port: 8080,
+    db_type: 'mysql',
     database:
     {
         "host": "localhost",

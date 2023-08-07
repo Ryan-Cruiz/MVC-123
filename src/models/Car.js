@@ -1,4 +1,4 @@
-const { model, orm } = require('../loaders.js');
+const { model } = require('../loaders.js');
 class Car extends model {
     // /* get all players */
     // async get_all(callback) {
@@ -20,20 +20,19 @@ class Car extends model {
     //     return callback(result);
     // }
     async getAllCars() {
-        this.profiler_enable();
-        let query = this.Mysql.format(orm.select('cars', '*').exec())
-        let result = await super.query(query);
+        // this.profiler_enable();
+        let result = this.select('cars', ['*']).exec()
         return result;
     }
-    async deleteCar(id){
+    async deleteCar(id) {
         this.profiler_enable();
-        let query = this.Mysql.format(orm.destroy('cars').where([`id = ${id}`]).exec());
-     
-        let result = await super.query(query);
+        let query = this.destroy('cars').where([`id = ${id}`]).exec()
+
+        // let result = await super.query(query);
         return result;
     }
     async get_orm() {
-        orm.select('test_tbl', ['v1', 'v2', 'v3', 'v4']).inner('test_tbl2', ['id', 'user_id']);
+        this.select('test_tbl', ['v1', 'v2', 'v3', 'v4']).inner('test_tbl2', ['id', 'user_id']).exec();
     }
 }
 module.exports = new Car();

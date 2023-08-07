@@ -103,6 +103,8 @@ Here you have it, you made a simple website using the framework! 🎉🥳
 ### Connecting it on Database
 On `config.js` 
 ```
+// pg / mysql
+db_type: database_type,
 database:
 {
     "host": "localhost",

@@ -39,11 +39,11 @@ class route_path {
 /**
  * 
  */
-routing = (filepath) => {
+function routing(filepath) {
     const new_Controller = require(filepath);
     return new_Controller;
 }
-routes = (filepath) => {
+function routes(filepath) {
     let newRoute = routing(filepath);
     return newRoute;
 }
@@ -51,14 +51,14 @@ routes = (filepath) => {
  * This Function will take a JS FILE and require the file to be use in taking queried data
  * or elsewhere
  */
-model = (filepath) => {
+function model(filepath) {
     let newRoute = routing('../src/models/' + filepath);
     return newRoute;
 }
 /**
  *  This Function will take a JS FILE and require the file to be use in routing or elsewhere
  */
-controller = (filepath) => {
+function controller(filepath) {
     let newRoute = routing('../src/controllers/' + filepath);
     return newRoute;
 
