@@ -88,12 +88,12 @@ class ORM {
                 this.queries += `${query_fields_arr[i]},`;
             }
         }
-        this.queries += ' VALUES(';
+        this.queries += ' VALUES(\'';
         for (let i = 0; i < query_val_arr.length; i++) {
             if (i >= query_val_arr.length - 1) {
-                this.queries += `${query_val_arr[i]})`;
+                this.queries += query_val_arr[i]+"');";
             } else {
-                this.queries += `${query_val_arr[i]},`;
+                this.queries += query_val_arr[i]+"','";
             }
         }
         console.log(this.queries)

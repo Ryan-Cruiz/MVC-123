@@ -34,5 +34,10 @@ class Car extends model {
     async get_orm() {
         this.select('test_tbl', ['v1', 'v2', 'v3', 'v4']).inner('test_tbl2', ['id', 'user_id']).exec();
     }
+    async insertCar(name,brand){
+        let query = this.insert('cars',['name','brand'],[name,brand]).exec();
+        // console.log(query);
+        return query;
+    }
 }
 module.exports = new Car();

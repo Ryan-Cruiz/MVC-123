@@ -5,8 +5,10 @@ NAME YOUR CLASS SAME NAME ON FILE LIKE CI
 import the model by using
 model_obj = new config.model('model name/.js');
 */
-const { core, profile } = require('../loaders.js');
-const { model } = core;
+// const { profile } = require('../loaders.js');
+const loader = require('../loaders.js'); 
+const model = loader.core.model;
+const $ = loader.profile;
 const car = model('Car');
 class Players {
     constructor() {
@@ -17,21 +19,36 @@ class Players {
     async index() {
         // console.log(res);
         const res = await car.getAllCars();
-        console.log(res,'response')
-        profile.res.render('index'); // render the index page
-        profile.res.end();  
+        console.log(res, 'response')
+        $.res.render('index'); // render the index page
+        $.res.end();
         console.log('this is a index function');
     }
 
-    async getCars(){
-        const res = await car.getAllCars();
-        profile.res.send(res)
+    async getCars() {
+        console.log('call from app', $.appServiceRole);
+        if(!$.appServiceRole){
+            $.res.redirect('back');
+        }else{
+            const res = await car.getAllCars();
+            $.res.send(res);
+        }
+        $.res.end();
     }
-
+    async insertCar(){
+        const name = $.req.body.name;
+        const brand = $.req.body.brand;
+        const res = await car.insertCar(name,brand);
+        console.log(res);
+        $.res.redirect('/');
+    }
     async destroy() {
-        const res = await car.deleteCar(profile.req.params.id);
-        profile.res.send(`DELETE HTTP method on ${'testAPI/' + profile.req.params.id} resource`);
+        const res = await car.deleteCar($.req.params.id);
+        $.res.send(`DELETE HTTP method on ${'testAPI/' + $.req.params.id} resource`);
         // profile.res.send('delete');
+    }
+    async wowie(){
+        $.res.send('wowie');
     }
 }
 

@@ -16,7 +16,9 @@ Things to remember before the doing spaghetti coding
     -> write it after the query is fired or else you might not able to catch the queries
 10.
 */
-const { config, profile } = require('./src/loaders.js');
+const loader = require('./src/loaders.js');
+const config = loader.config;
+const profile = loader.profile;
 const Express = require("express");
 const path = require("path");
 const app = Express();
@@ -33,16 +35,32 @@ app.use(session(config.session));
 app.set('view engine', 'ejs');
 app.use(cors());
 const routes = require('./system/routes.js');
-
+const middleware = require('./system/middleware.js');
 app.use((req, res, next) => {
     profiler.time = Date.now(); // take the current time of execution
     profiler.req = req; // take the request
     profiler.res = res; // take the response
+    req.session.roles = ['admin','auth'];
+    profiler.appServiceRole = middleware.validate_role(req.url, req.session.roles);
     /* deliver all this on profiler.js and fetch it on mvc_model and logs it there when
-        profiler is called in specific method
+    profiler is called in specific method
     */
     next();
 });
+// this middleware is checking if id = 0 then to the next route
+app.get('/user/:id', (req, res, next) => {
+    if (req.params.id == 0)
+        next('route');
+    else next();
+}, (req, res, next) => {
+    res.send('regular');
+})
+app.get('/user/:id', (req, res, next) => {
+    console.log(req.params.id);
+    // res.send('special');
+    // console.log(req);
+
+})
 app.use(routes);
 
 app.listen(config.port, function () {

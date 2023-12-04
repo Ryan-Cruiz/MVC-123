@@ -30,7 +30,7 @@ module.exports = class mvc_model extends ORM {
         }
     }
 
-        async redis() {
+    async redis() {
         const client = this.redis.createClient();
         client.on('error', err => console.log('Redis Client Error', err));
         await client.connect();

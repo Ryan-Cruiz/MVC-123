@@ -1,12 +1,13 @@
 const Express = require("express");
 const Router = Express.Router();
 const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();
+// const jsonParser = bodyParser.json();
 /**
  * 
  */
 class route_path {
     constructor() {
+        this.routes = [];
         this.get = {};
         this.post = {};
         this.put = {};
@@ -20,18 +21,22 @@ class route_path {
         for (let i = 0; i < get.length; i++) {
             // console.log('get',this.get[get[i]]);
             Router.get(get[i], this.get[get[i]]);
+            this.routes.push(get[i]);
         }
         for (let i = 0; i < post.length; i++) {
             //console.log('post',post[i],this.post[post[i]]);
             Router.post(post[i], this.post[post[i]]);
+            this.routes.push(post[i]);
         }
         for (let i = 0; i < put.length; i++) {
             //console.log('put',put[i],this.put[put[i]]);
             Router.put(put[i], this.put[put[i]]);
+            this.routes.push(put[i]);
         }
         for (let i = 0; i < destroy.length; i++) {
             console.log('destroy', destroy[i], this.destroy[destroy[i]]);
             Router.delete(destroy[i], this.destroy[destroy[i]]);
+            this.routes.push(destroy[i]);
         }
         return Router;
     }
